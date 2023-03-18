@@ -22,7 +22,7 @@ def make_pos(tup):
 def game_server(after_connect):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as accepter_socket:
         accepter_socket.bind(('', GAME_PORT))
-        accepter_socket.listen(1)
+        accepter_socket.listen(3)
 
         # non-blocking to allow keyboard interupts (^c)
         accepter_socket.setblocking(False)
@@ -42,12 +42,10 @@ def game_server(after_connect):
 
             while True:
                 pos = ""
-                print("waiting for opp's pos")
                 opp_pos = game_socket.recv(1024).decode()
                 # pickle.loads(game_socket.recv(1024))
                 if not opp_pos:
                     break
-
                 game_socket.send(pos.encode())
                 # game_socket.send(pickle.dumps(pos))
 
@@ -61,7 +59,6 @@ def game_client(opponent):
             pos = ""
             game_socket.send(pos.encode())
             # game_socket.send(pickle.dumps(pos))
-            print("waiting for opp's pos")
             opp_pos = game_socket.recv(1024).decode()
             # pickle.loads(game_socket.recv(1024))
             if not opp_pos:

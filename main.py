@@ -1,5 +1,6 @@
 from maze import *
 import pygame
+import socket
 from value import *
 from random import randrange
 

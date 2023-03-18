@@ -1,7 +1,7 @@
-from src.identification import go_online, go_offline, set_username, stop_identification
-from src.identification import in_lobby, in_game, waiting_for_connection
-from src.find_users import find_online_users
-from src.game import game_server, game_client
+from identification import go_online, go_offline, set_username, stop_identification
+from identification import in_lobby, in_game, waiting_for_connection
+from find_users import find_online_users
+from game import game_server, game_client
 
 
 def online_users(my_username=None):
