@@ -1,6 +1,6 @@
 from maze import *
 import pygame
-import socket
+from network import *
 from value import *
 from random import randrange
 
@@ -72,6 +72,15 @@ def kill_player():
 
 def is_game_over():
     pass
+
+
+def read_pos(pos):
+    pos = pos.split(",")
+    return int(pos[0]), int(pos[1])
+
+
+def make_pos(tup):
+    return str(tup[0]) + "," + str(tup[1])
 
 
 FPS = 60

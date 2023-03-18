@@ -8,13 +8,7 @@ GAME_PORT = 6005
 
 
 ############## GAME LOGIC ##############
-"""def read_pos(pos):
-    pos = pos.split(",")
-    return int(pos[0]), int(pos[1])
 
-
-def make_pos(tup):
-    return pos(tup[0]) + "," + pos(tup[1])"""
 
 ############## EXPORTED FUNCTIONS ##############
 
