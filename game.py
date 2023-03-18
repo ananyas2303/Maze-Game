@@ -8,7 +8,13 @@ GAME_PORT = 6005
 
 
 ############## GAME LOGIC ##############
+"""def read_pos(pos):
+    pos = pos.split(",")
+    return int(pos[0]), int(pos[1])
 
+
+def make_pos(tup):
+    return pos(tup[0]) + "," + pos(tup[1])"""
 
 ############## EXPORTED FUNCTIONS ##############
 
@@ -35,15 +41,15 @@ def game_server(after_connect):
             print('Game Started')
 
             while True:
-                move = ""
-                print("waiting for opp's move")
-                opp_move = game_socket.recv(1024).decode()
+                pos = ""
+                print("waiting for opp's pos")
+                opp_pos = game_socket.recv(1024).decode()
                 # pickle.loads(game_socket.recv(1024))
-                if not opp_move:
+                if not opp_pos:
                     break
 
-                game_socket.send(move.encode())
-                # game_socket.send(pickle.dumps(move))
+                game_socket.send(pos.encode())
+                # game_socket.send(pickle.dumps(pos))
 
 
 def game_client(opponent):
@@ -52,11 +58,11 @@ def game_client(opponent):
         print('Game Started')
 
         while True:
-            move = ""
-            game_socket.send(move.encode())
-            # game_socket.send(pickle.dumps(move))
-            print("waiting for opp's move")
-            opp_move = game_socket.recv(1024).decode()
+            pos = ""
+            game_socket.send(pos.encode())
+            # game_socket.send(pickle.dumps(pos))
+            print("waiting for opp's pos")
+            opp_pos = game_socket.recv(1024).decode()
             # pickle.loads(game_socket.recv(1024))
-            if not opp_move:
+            if not opp_pos:
                 break
