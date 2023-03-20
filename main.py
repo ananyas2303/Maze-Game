@@ -26,8 +26,7 @@ class other_players:
     def draw(self):
         screen.blit(self.img, self.rect)
 
-    def move(self, direction):
-        x, y = 0, 0
+    def move(self, direction, x, y):
         if direction == 'left':
             x = -self.speed * tile
         elif direction == 'right':
@@ -74,9 +73,9 @@ def is_game_over():
     pass
 
 
-def read_pos(pos):
-    pos = pos.split(",")
-    return int(pos[0]), int(pos[1])
+def read_pos(str):
+    str = str.split(",")
+    return int(str[0]), int(str[1])
 
 
 def make_pos(tup):
@@ -91,6 +90,9 @@ player = Player()
 keys = {'a': pygame.K_a, 'd': pygame.K_d, 'w': pygame.K_w, 's': pygame.K_s}
 other_players_list = [other_players() for i in range(2)]
 
+# get position from the server
+n = Network()
+startpos = read_pos(n.get_pos())
 
 while True:
     surface.blit(screen, (0, 0))
@@ -102,14 +104,16 @@ while True:
             pygame.quit()
 
     pressedkey = pygame.key.get_pressed()
+    a = startpos[0]
+    b = startpos[1]
     if pressedkey[pygame.K_j]:
-        other_players_list[0].move('left')
+        other_players_list[0].move('left', a, b)
     elif pressedkey[pygame.K_l]:
-        other_players_list[0].move('right')
+        other_players_list[0].move('right', a, b)
     elif pressedkey[pygame.K_i]:
-        other_players_list[0].move('up')
+        other_players_list[0].move('up', a, b)
     elif pressedkey[pygame.K_k]:
-        other_players_list[0].move('down')
+        other_players_list[0].move('down', a, b)
     if pressedkey[pygame.K_f]:
         other_players_list[1].move('left')
     elif pressedkey[pygame.K_h]:

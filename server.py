@@ -15,6 +15,15 @@ s.listen(4)
 print('Waiting for connections')
 
 
+def read_pos(str):
+    str = str.split(",")
+    return int(str[0]), int(str[1])
+
+
+def make_pos(tup):
+    return str(tup[0]) + "," + str(tup[1])
+
+
 def thread_client(connection):
     connection.send(str.encode("Connected"))
     reply = ""
