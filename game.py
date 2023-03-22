@@ -16,7 +16,7 @@ GAME_PORT = 6005
 def game_server(after_connect):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as accepter_socket:
         accepter_socket.bind(('', GAME_PORT))
-        accepter_socket.listen(3)
+        accepter_socket.listen(2)
 
         # non-blocking to allow keyboard interupts (^c)
         accepter_socket.setblocking(False)

@@ -1,5 +1,7 @@
 import socket
+import pickle
 from _thread import *
+from sprites import *
 import sys
 
 
@@ -11,41 +13,29 @@ try:
 except socket.error as e:
     str(e)
 
-s.listen(4)
+s.listen(2)
 print('Waiting for connections')
 
 
-def read_pos(str):
-    str = str.split(",")
-    return int(str[0]), int(str[1])
-
-
-def make_pos(tup):
-    return str(tup[0]) + "," + str(tup[1])
-
-
-pos = [(0, 0), (100, 100)]
-
-
 def thread_client(connection, player):
-    connection.send(str.encode(make_pos(pos[player])))
+    connection.send(pickle.dumps(other_players_list[player]))
     reply = ""
     while True:
         try:
-            data = read_pos(connection.recv(1024).decode())
-            pos[player] = data
+            data = pickle.loads(connection.recv(1024))
+            other_players_list[player] = data
 
             if not data:
                 print("Disconnected")
                 break
             else:
                 if player == 1:
-                    reply = pos[0]
+                    reply = other_players_list[0]
                 else:
-                    reply = pos[1]
+                    reply = other_players_list[1]
                 print("Recieved ", data)
                 print("sending ", reply)
-            connection.sendall(str.encode(make_pos(reply)))
+            connection.sendall(pickle.dumps(reply))
         except:
             break
     print("Lost connection")
