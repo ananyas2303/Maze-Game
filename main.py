@@ -48,11 +48,18 @@ class Player:
             self.img, (45, 45))
         self.rect = self.img.get_rect()
         self.rect.center = tile // 2, tile // 2
-        self.directions = {'a': (-self.speed, 0), 'd': (self.speed, 0),
-                           'w': (0, -self.speed), 's': (0, self.speed)}
+        # self.directions = {'a': (-self.speed, 0), 'd': (self.speed, 0),'w': (0, -self.speed), 's': (0, self.speed)}
 
     def move(self, direction):
-        x, y = self.directions[direction]
+        x, y = 0, 0
+        if direction == 'left':
+            x = -self.speed * tile
+        elif direction == 'right':
+            x = self.speed * tile
+        elif direction == 'up':
+            y = -self.speed * tile
+        elif direction == 'down':
+            y = self.speed * tile
         tmp_rect = self.rect.move(x, y)
         if tmp_rect.collidelist(walls_collide_list) == -1:
             self.rect = tmp_rect
@@ -92,7 +99,6 @@ other_players_list = [other_players() for i in range(2)]
 
 # get position from the server
 n = Network()
-startpos = read_pos(n.get_pos())
 
 while True:
     surface.blit(screen, (0, 0))
@@ -102,10 +108,13 @@ while True:
             exit()
         if event.type == pygame.USEREVENT:
             pygame.quit()
-
-    pressedkey = pygame.key.get_pressed()
+    startpos = read_pos(n.get_pos())
     a = startpos[0]
     b = startpos[1]
+    p2pos = read_pos(n.send(make_pos((a, b))))
+    c = p2pos[0]
+    d = p2pos[1]
+    pressedkey = pygame.key.get_pressed()
     if pressedkey[pygame.K_j]:
         other_players_list[0].move('left', a, b)
     elif pressedkey[pygame.K_l]:
@@ -114,22 +123,22 @@ while True:
         other_players_list[0].move('up', a, b)
     elif pressedkey[pygame.K_k]:
         other_players_list[0].move('down', a, b)
-    if pressedkey[pygame.K_f]:
-        other_players_list[1].move('left')
-    elif pressedkey[pygame.K_h]:
-        other_players_list[1].move('right')
-    elif pressedkey[pygame.K_t]:
-        other_players_list[1].move('up')
-    elif pressedkey[pygame.K_g]:
-        other_players_list[1].move('down')
+    if pressedkey[pygame.K_s]:
+        other_players_list[1].move('left', c, d)
+    elif pressedkey[pygame.K_a]:
+        other_players_list[1].move('right', c, d)
+    elif pressedkey[pygame.K_d]:
+        other_players_list[1].move('up', c, d)
+    elif pressedkey[pygame.K_w]:
+        other_players_list[1].move('down', c, d)
     if pressedkey[pygame.K_LEFT]:
-        player.move('a')
+        player.move('left')
     elif pressedkey[pygame.K_RIGHT]:
-        player.move('d')
+        player.move('right')
     elif pressedkey[pygame.K_UP]:
-        player.move('w')
+        player.move('up')
     elif pressedkey[pygame.K_DOWN]:
-        player.move('s')
+        player.move('down')
 
     for cell in maze:
         cell.draws(screen)

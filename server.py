@@ -24,28 +24,37 @@ def make_pos(tup):
     return str(tup[0]) + "," + str(tup[1])
 
 
-def thread_client(connection):
-    connection.send(str.encode("Connected"))
+pos = [(0, 0), (100, 100)]
+
+
+def thread_client(connection, player):
+    connection.send(str.encode(make_pos(pos[player])))
     reply = ""
     while True:
         try:
-            data = connection.recv(1024)
-            reply = data.decode("utf-8")
+            data = read_pos(connection.recv(1024).decode())
+            pos[player] = data
+
             if not data:
                 print("Disconnected")
                 break
             else:
-                print("Recieved ", reply)
+                if player == 1:
+                    reply = pos[0]
+                else:
+                    reply = pos[1]
+                print("Recieved ", data)
                 print("sending ", reply)
-            connection.sendall(str.encode(reply))
-
+            connection.sendall(str.encode(make_pos(reply)))
         except:
             break
     print("Lost connection")
     connection.close()
 
 
+curr_player = 0
 while True:
     connection, addr = s.accept()
     print('connected to', addr)
-    start_new_thread(thread_client, (connection,))
+    start_new_thread(thread_client, (connection, curr_player))
+    curr_player += 1
