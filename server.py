@@ -1,7 +1,6 @@
 import socket
 import pickle
 from _thread import *
-from sprites import *
 import sys
 
 
@@ -15,6 +14,8 @@ except socket.error as e:
 
 s.listen(2)
 print('Waiting for connections')
+
+other_players_list = []
 
 
 def thread_client(connection, player):
