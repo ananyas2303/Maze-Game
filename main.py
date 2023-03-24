@@ -75,6 +75,20 @@ def kill_player():
     return False
 
 
+"""def redraw(screen,player,player2):
+    player.draw(screen)
+    player2.draw(screen)
+    pygame.display.update()
+
+def read_pos(str):
+    str = str.split(",")
+    return int(str[0]), int(str[1])
+
+
+def make_pos(tup):
+    return str(tup[0]) + "," + str(tup[1])"""
+
+
 def is_game_over():
     pass
 
@@ -84,11 +98,12 @@ pygame.init()
 surface = pygame.display.set_mode((width, height))
 clock = pygame.time.Clock()
 
-# get position from the server
+"""n = Network()
+other_players_list[0] = n.get_p()"""
 
 while True:
     surface.blit(screen, (0, 0))
-
+    # other_players_list[1] = n.send(other_players_list[0])
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
@@ -122,6 +137,7 @@ while True:
 
     for cell in maze:
         cell.draws(screen)
+    # n.send(maze)
     if kill_player():
         exit()
     is_game_over()
